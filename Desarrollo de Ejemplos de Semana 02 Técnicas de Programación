@@ -1,0 +1,76 @@
+El propósito de esta tarea es que los estudiantes apliquen los conceptos aprendidos en la clase de "Técnicas de Programación" mediante la creación de ejemplos prácticos. Se espera que los estudiantes revisen y analicen los ejemplos para cada una de las técnicas de programación: abstracción, encapsulación, herencia y polimorfismo.
+
+Ejemplo de Abstraccion 
+CODIGO
+from abc import ABC, abstractmethod
+
+class Vehiculo(ABC):
+    @abstractmethod
+    def tipo(self):
+        pass
+
+class Auto(Vehiculo):
+    def tipo(self):
+        return "Automóvil"
+
+class Moto(Vehiculo):
+    def tipo(self):
+        return "Motocicleta"
+
+auto = Auto()
+moto = Moto()
+print(auto.tipo(), "|", moto.tipo())
+
+
+Ejemplo de Encapculacion 
+CODIGO
+class Producto:
+    def __init__(self, nombre, precio):
+        self.__nombre = nombre
+        self.__precio = precio
+
+    def mostrar_precio(self):
+        return f"Precio de {self.__nombre}: ${self.__precio}"
+
+producto = Producto("Laptop", 2000)
+print(producto.mostrar_precio())
+
+
+Ejemplo de Herencia
+CODIGO
+class Empleado:
+    def __init__(self, salario):
+        self.salario = salario
+
+class Gerente(Empleado):
+    def puesto(self):
+        return "Gerente"
+
+print(Gerente(4000).puesto(), "| Salario:", Gerente(4000).salario)
+
+
+Ejemplo de Polimosfirmo
+CODIGO
+class Animal:
+    def sonido(self):
+        pass
+
+class Gallina(Animal):
+    def sonido(self):
+        return "kikiriki"
+
+class Obeja(Animal):
+    def sonido(self):
+        return "Meeee"
+
+class Vaca(Animal):
+    def sonido(self):
+        return "Muuu"
+
+# Creación de objetos
+animales = [Gallina(), Obeja(), Vaca()]
+
+# Uso del método polimórfico
+for animal in animales:
+    print("El sonido es:", animal.sonido())
+
