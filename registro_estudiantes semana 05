@@ -1,0 +1,35 @@
+# Programa para gestionar información básica de estudiantes.
+# Este programa permite registrar y mostrar información básica de un estudiante, incluyendo su nombre,
+# edad, promedio de calificaciones y estado de inscripción.
+
+def registrar_estudiante():
+    """
+    Solicita al usuario ingresar los datos de un estudiante.
+    Retorna un diccionario con la información ingresada.
+    """
+    nombre = input("Ingrese el nombre del estudiante: ")  # Tipo de dato: string
+    edad = int(input("Ingrese la edad del estudiante: "))  # Tipo de dato: integer
+    promedio_calificaciones = float(input("Ingrese el promedio de calificaciones: "))  # Tipo de dato: float
+    inscrito = input("¿El estudiante está inscrito? (sí/no): ").strip().lower() == "sí"  # Tipo de dato: boolean
+    
+    return {
+        "nombre": nombre,
+        "edad": edad,
+        "promedio_calificaciones": promedio_calificaciones,
+        "inscrito": inscrito
+    }
+
+def mostrar_estudiante(estudiante):
+    """
+    Muestra la información de un estudiante.
+    """
+    print("\nInformación del estudiante:")
+    print(f"Nombre: {estudiante['nombre']}")
+    print(f"Edad: {estudiante['edad']}")
+    print(f"Promedio de Calificaciones: {estudiante['promedio_calificaciones']}")
+    print(f"Estado de Inscripción: {'Inscrito' if estudiante['inscrito'] else 'No Inscrito'}")
+
+# Ejecución principal del programa
+if __name__ == "__main__":
+    estudiante = registrar_estudiante()
+    mostrar_estudiante(estudiante)
