@@ -1,0 +1,74 @@
+Codigo De tienda de venta de celulares.
+# Definir la clase Celular
+class Celular:
+    def __init__(self, marca, modelo, precio, stock):
+        self.marca = marca
+        self.modelo = modelo
+        self.precio = precio
+        self.stock = stock
+
+    def vender(self, cantidad):
+        """Vende una cierta cantidad de celulares y actualiza el stock."""
+        if cantidad <= self.stock:
+            self.stock -= cantidad
+            print(f"Se vendieron {cantidad} {self.marca} {self.modelo}. Quedan {self.stock} en stock.")
+        else:
+            print(f"No hay suficiente stock de {self.marca} {self.modelo}.")
+
+    def mostrar_info(self):
+        """Muestra la información del celular."""
+        print(f"Celular: {self.marca} {self.modelo}\nPrecio: ${self.precio}\nStock disponible: {self.stock}")
+
+
+# Definir la clase Tienda
+class Tienda:
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.celulares = []
+
+    def agregar_celular(self, celular):
+        """Agrega un celular al inventario de la tienda."""
+        self.celulares.append(celular)
+        print(f"{celular.marca} {celular.modelo} agregado al inventario.")
+
+    def mostrar_inventario(self):
+        """Muestra todos los celulares disponibles en la tienda."""
+        print(f"Inventario de {self.nombre}:")
+        for celular in self.celulares:
+            celular.mostrar_info()
+
+    def vender_celular(self, marca, modelo, cantidad):
+        """Busca un celular por marca y modelo, y realiza una venta."""
+        for celular in self.celulares:
+            if celular.marca == marca and celular.modelo == modelo:
+                celular.vender(cantidad)
+                return
+        print(f"No se encontró el celular {marca} {modelo} en el inventario.")
+
+
+# Crear algunos celulares
+celular1 = Celular("Apple", " iPhone 16", 1200, 9)
+celular2 = Celular("Samsung", "Galaxy  S22", 1000, 4)
+celular3 = Celular("Xiaomi", "Redmi Note 13", 300, 15)
+
+# Crear la tienda
+tienda = Tienda("TechStore")
+
+# Agregar celulares al inventario
+tienda.agregar_celular(celular1)
+tienda.agregar_celular(celular2)
+tienda.agregar_celular(celular3)
+
+# Mostrar el inventario
+tienda.mostrar_inventario()
+
+# Realizar una venta
+tienda.vender_celular("Samsung", "Galaxy S22", 2)
+tienda.vender_celular("Apple", "iPhone 16", 3)
+
+# Mostrar el inventario después de la venta
+tienda.mostrar_inventario()
+
+
+
+
