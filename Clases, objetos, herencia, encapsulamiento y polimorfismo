@@ -1,0 +1,42 @@
+Gestion de productos electricos
+# Clase base para Productos Electrónicos
+class ProductoElectronico:
+    def __init__(self, nombre, precio):
+        self.__nombre = nombre  # Encapsulación
+        self.__precio = precio  # Encapsulación
+
+    def get_nombre(self):
+        return self.__nombre
+
+    def get_precio(self):
+        return self.__precio
+
+    def descripcion(self):
+        return f"Producto: {self.__nombre}, Precio: ${self.__precio}"
+
+# Clase derivada para Laptops
+class Laptop(ProductoElectronico):
+    def __init__(self, nombre, precio, ram, procesador):
+        super().__init__(nombre, precio)
+        self.ram = ram
+        self.procesador = procesador
+
+
+    def descripcion(self):  # Polimorfismo
+        return f"Laptop: {self.get_nombre()}, RAM: {self.ram}GB, Procesador: {self.procesador}, Precio: ${self.get_precio()}"
+
+# Clase derivada para Smartphones
+class Smartphone(ProductoElectronico):
+    def __init__(self, nombre, precio, camara):
+        super().__init__(nombre, precio)
+        self.camara = camara
+
+    def descripcion(self):  # Polimorfismo
+        return f"Smartphone: {self.get_nombre()}, Cámara: {self.camara}MP, Precio: ${self.get_precio()}"
+
+# Crear instancias y mostrar resultados
+laptop = Laptop("ASUS Vivobook", 900, 15, "Intel i5")
+smartphone = Smartphone("Samsung Galaxy S21", 1000, 107)
+
+print(laptop.descripcion())
+print(smartphone.descripcion())
