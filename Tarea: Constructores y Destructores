@@ -1,0 +1,75 @@
+# Programa en Python con tres clases que usan constructores y destructores
+
+# Clase 1: Archivo
+class Archivo:
+    def __init__(self, nombre):
+        # Constructor que inicializa el nombre del archivo y abre el archivo en modo escritura
+        self.nombre = nombre
+        self.archivo = open(nombre, 'w')
+        print(f"Archivo '{self.nombre}' creado y abierto para escritura.")
+
+    def escribir(self, contenido):
+        # Método para escribir contenido en el archivo
+        self.archivo.write(contenido + '\n')
+        print(f"Se escribió en el archivo: {contenido}")
+
+    def __del__(self):
+        # Destructor que cierra el archivo
+        self.archivo.close()
+        print(f"Archivo '{self.nombre}' cerrado correctamente.")
+
+# Clase 2: Conexión
+class Conexion:
+    def __init__(self, servidor):
+        # Constructor que simula la conexión a un servidor
+        self.servidor = servidor
+        self.conectado = True
+        print(f"Conectado al servidor '{self.servidor}'.")
+
+    def enviar_datos(self, datos):
+        # Método para enviar datos si la conexión está activa
+        if self.conectado:
+            print(f"Datos enviados a '{self.servidor}': {datos}")
+        else:
+            print("No se puede enviar datos: Conexión cerrada.")
+
+    def __del__(self):
+        # Destructor que cierra la conexión
+        if self.conectado:
+            self.conectado = False
+            print(f"Conexión al servidor '{self.servidor}' cerrada.")
+
+# Clase 3: Usuario
+class Usuario:
+    def __init__(self, nombre, edad):
+        # Constructor que inicializa el nombre y la edad del usuario
+        self.nombre = nombre
+        self.edad = edad
+        print(f"Usuario '{self.nombre}', edad {self.edad}, creado correctamente.")
+
+    def mostrar_info(self):
+        # Método para mostrar la información del usuario
+        print(f"Usuario: {self.nombre}, Edad: {self.edad}")
+
+    def __del__(self):
+        # Destructor que indica que el usuario fue eliminado
+        print(f"Usuario '{self.nombre}' eliminado del sistema.")
+
+# Demostración del uso de las clases
+# Crear un archivo, escribir en él y cerrarlo
+archivo = Archivo("mi_archivo.txt")
+archivo.escribir("Hola, soy estudiante de la universidad estatal amazonica.")
+del archivo  # Llama explícitamente al destructor
+
+# Crear una conexión, enviar datos y cerrar la conexión
+conexion = Conexion("servidor_prueba.com")
+conexion.enviar_datos("Mensaje importante")
+del conexion  # Llama explícitamente al destructor
+
+# Crear un usuario, mostrar su información y eliminarlo
+usuario = Usuario("Alex", 22)
+usuario.mostrar_info()
+del usuario  # Llama explícitamente al destructor
+
+# Nota: Los destructores (__del__) se activan automáticamente cuando el objeto sale del alcance,
+# pero aquí los llamamos explícitamente para demostrar su funcionamiento.
