@@ -1,0 +1,100 @@
+class Libro:
+    def __init__(self, titulo, autor, categoria, isbn):
+        self.titulo_autor = (titulo, autor)  # Tupla para título y autor (inmutables)
+        self.categoria = categoria
+        self.isbn = isbn
+
+    def __str__(self):
+        return f"{self.titulo_autor[0]} por {self.titulo_autor[1]} (ISBN: {self.isbn}, Categoría: {self.categoria})"
+
+
+class Usuario:
+    def __init__(self, nombre, id_usuario):
+        self.nombre = nombre
+        self.id_usuario = id_usuario
+        self.libros_prestados = []  # Lista para almacenar libros prestados
+
+    def __str__(self):
+        return f"Usuario: {self.nombre} (ID: {self.id_usuario})"
+
+
+class Biblioteca:
+    def __init__(self):
+        self.libros_disponibles = {}  # Diccionario con ISBN como clave
+        self.usuarios_registrados = set()  # Conjunto para evitar IDs duplicados
+
+    def agregar_libro(self, libro):
+        if libro.isbn not in self.libros_disponibles:
+            self.libros_disponibles[libro.isbn] = libro
+            print(f"Libro agregado: {libro}")
+        else:
+            print("El libro ya está registrado en la biblioteca.")
+
+    def eliminar_libro(self, isbn):
+        if isbn in self.libros_disponibles:
+            del self.libros_disponibles[isbn]
+            print(f"Libro con ISBN {isbn} eliminado.")
+        else:
+            print("El libro no existe en la biblioteca.")
+
+    def registrar_usuario(self, usuario):
+        if usuario.id_usuario not in self.usuarios_registrados:
+            self.usuarios_registrados.add(usuario.id_usuario)
+            print(f"Usuario registrado: {usuario}")
+        else:
+            print("Este usuario ya está registrado.")
+
+    def eliminar_usuario(self, id_usuario):
+        if id_usuario in self.usuarios_registrados:
+            self.usuarios_registrados.remove(id_usuario)
+            print(f"Usuario con ID {id_usuario} eliminado.")
+        else:
+            print("El usuario no está registrado.")
+
+    def prestar_libro(self, usuario, isbn):
+        if usuario.id_usuario in self.usuarios_registrados and isbn in self.libros_disponibles:
+            libro = self.libros_disponibles.pop(isbn)
+            usuario.libros_prestados.append(libro)
+            print(f"Libro {isbn} prestado a {usuario.nombre}.")
+        else:
+            print("No se pudo realizar el préstamo. Verifique usuario y disponibilidad del libro.")
+
+    def devolver_libro(self, usuario, isbn):
+        for libro in usuario.libros_prestados:
+            if libro.isbn == isbn:
+                usuario.libros_prestados.remove(libro)
+                self.libros_disponibles[isbn] = libro
+                print(f"Libro {isbn} devuelto por {usuario.nombre}.")
+                return
+        print("El usuario no tiene este libro en préstamo.")
+
+    def buscar_libro(self, criterio, valor):
+        resultados = [libro for libro in self.libros_disponibles.values()
+                      if (criterio == "titulo" and libro.titulo_autor[0] == valor) or
+                         (criterio == "autor" and libro.titulo_autor[1] == valor) or
+                         (criterio == "categoria" and libro.categoria == valor)]
+        if resultados:
+            for libro in resultados:
+                print(libro)
+        else:
+            print("No se encontraron libros con ese criterio.")
+
+    def listar_libros_prestados(self, usuario):
+        if usuario.libros_prestados:
+            print(f"Libros prestados a {usuario.nombre}: {[str(libro) for libro in usuario.libros_prestados]}")
+        else:
+            print("El usuario no tiene libros prestados.")
+
+
+# Ejemplo de uso
+biblioteca = Biblioteca()
+libro1 = Libro("After", "Anna Todd", "Romance", "12345")
+libro2 = Libro("El principito", "Antoine de Saint-Exupéry", "Infantil", "67890")
+usuario1 = Usuario("Wadby Lopez", "023")
+
+biblioteca.agregar_libro(libro1)
+biblioteca.agregar_libro(libro2)
+biblioteca.registrar_usuario(usuario1)
+biblioteca.prestar_libro(usuario1, "12345")
+biblioteca.listar_libros_prestados(usuario1)
+biblioteca.devolver_libro(usuario1, "12345")
