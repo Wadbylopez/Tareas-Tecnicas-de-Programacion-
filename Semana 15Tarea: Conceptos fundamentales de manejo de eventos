@@ -1,0 +1,78 @@
+import tkinter as tk
+from tkinter import messagebox
+
+class ShoppingApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Lista de Compras")
+
+        # Lista de objetos
+        self.items = []
+
+        # Campo de entrada para escribir nuevos objetos
+        self.entry_item = tk.Entry(self.root, width=40)
+        self.entry_item.grid(row=0, column=0, padx=10, pady=10)
+
+        # Botones
+        self.boton_add = tk.Button(self.root, text="Añadir Objeto", width=15, command=self.add_item)
+        self.boton_add.grid(row=0, column=1, padx=10)
+
+        self.boton_completar = tk.Button(self.root, text="Marcar como Completado", width=20, command=self.mark_completed)
+        self.boton_completar.grid(row=1, column=0, padx=10, pady=5)
+
+        self.boton_pendiente = tk.Button(self.root, text="Marcar como Pendiente", width=20, command=self.mark_pending)
+        self.boton_pendiente.grid(row=1, column=1, padx=10, pady=5)
+
+        self.boton_eliminar = tk.Button(self.root, text="Eliminar Objeto", width=20, command=self.delete_item)
+        self.boton_eliminar.grid(row=2, column=0, padx=10, pady=5)
+
+        # Listbox para mostrar objetos
+        self.listbox_items = tk.Listbox(self.root, width=50, height=10)
+        self.listbox_items.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+
+        # Vínculo de la tecla Enter para agregar objeto
+        self.entry_item.bind("<Return>", lambda event: self.add_item())
+
+    def add_item(self):
+        item = self.entry_item.get()
+        if item != "":
+            self.items.append({"item": item, "status": "Pendiente"})
+            self.entry_item.delete(0, tk.END)  # Limpiar el campo de entrada
+            self.show_items()
+        else:
+            messagebox.showwarning("Advertencia", "Por favor, ingrese un objeto.")
+
+    def mark_completed(self):
+        try:
+            selected_index = self.listbox_items.curselection()[0]
+            self.items[selected_index]["status"] = "Completado"
+            self.show_items()
+        except IndexError:
+            messagebox.showwarning("Advertencia", "Seleccione un objeto para marcar como completado.")
+
+    def mark_pending(self):
+        try:
+            selected_index = self.listbox_items.curselection()[0]
+            self.items[selected_index]["status"] = "Pendiente"
+            self.show_items()
+        except IndexError:
+            messagebox.showwarning("Advertencia", "Seleccione un objeto para marcar como pendiente.")
+
+    def delete_item(self):
+        try:
+            selected_index = self.listbox_items.curselection()[0]
+            del self.items[selected_index]
+            self.show_items()
+        except IndexError:
+            messagebox.showwarning("Advertencia", "Seleccione un objeto para eliminar.")
+
+    def show_items(self):
+        self.listbox_items.delete(0, tk.END)
+        for item in self.items:
+            item_text = f"{item['item']} ({item['status']})"
+            self.listbox_items.insert(tk.END, item_text)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = ShoppingApp(root)
+    root.mainloop()
